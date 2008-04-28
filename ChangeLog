@@ -1,5 +1,8 @@
 2008-04-28  Evan Monroig  <evan.monroig@gmail.com>
 
+	* load-blapack-libs.lisp (*gfortran-lib*, *blas-lib*)
+	(*lapack-lib*): use my own paths
+
 	* blapack-cffi-types.lisp (define-fortran-type, :fortran-int)
 	(:fortran-float, :fortran-double, :fortran-complex-float)
 	(:fortran-complex-double, :fortran-logical, :logical): use macro

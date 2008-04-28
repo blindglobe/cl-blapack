@@ -10,9 +10,9 @@
 ;; EDIT THESE VARIABLES TO POINT TO YOUR LIBRARIES!
 
 (eval-when (:compile-toplevel :load-toplevel)
-  (defvar *gfortran-lib* "/usr/lib/libgfortran.so.0")
-  (defvar *blas-lib* "/usr/lib/atlas/libblas.so.3")
-  (defvar *lapack-lib* "/usr/lib/atlas/liblapack.so.3")
+  (defparameter *gfortran-lib* "/usr/lib/libgfortran.so.1")
+  (defparameter *blas-lib* "/usr/lib/atlas/libblas.so.3")
+  (defparameter *lapack-lib* "/usr/lib/atlas/liblapack.so.3")
 
   (defvar *blapack-libs-loaded* nil)
 
