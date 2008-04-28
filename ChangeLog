@@ -1,0 +1,8 @@
+2008-04-28  Evan Monroig  <evan.monroig@gmail.com>
+
+	* blapack-cffi-types.lisp (define-fortran-type, :fortran-int)
+	(:fortran-float, :fortran-double, :fortran-complex-float)
+	(:fortran-complex-double, :fortran-logical, :logical): use macro
+	to call CFFI:DEFINE-FOREIGN-TYPE instead of CFFI:DEFCTYPE
+	(translate-to-foreign, translate-from-foreign): updated methods
+
