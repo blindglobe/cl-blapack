@@ -1,3 +1,8 @@
+2008-04-29  Evan Monroig  <evan.monroig@gmail.com>
+
+	* generate-blapack-interface.lisp (*outdir*): point to cl-blapack
+	directory wherever it may be
+
 2008-04-28  Evan Monroig  <evan.monroig@gmail.com>
 
 	* load-blapack-libs.lisp (*gfortran-lib*, *blas-lib*)

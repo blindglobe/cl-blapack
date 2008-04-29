@@ -177,7 +177,12 @@ remaining lines."
 
 ;; Edit these if you want to change the input/output locations!
 (defparameter *basedir* #p"/home/rif/software/LAPACK/")
-(defparameter *outdir* #p"/home/rif/middleangle/cl/cl-blapack/")
+(defparameter *outdir*
+  (make-pathname :directory
+                 (pathname-directory
+                  (truename (asdf:system-definition-pathname
+                             (asdf:find-system
+                              :org.middleangle.cl-blapack-gen))))))
 
 (defun parse-blas-files (&optional (basedir *basedir*))
   (let ((files
