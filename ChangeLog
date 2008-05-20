@@ -1,5 +1,9 @@
 2008-05-20  Evan Monroig  <evan.monroig@gmail.com>
 
+	* cl-blapack.lisp: slightly modified the code for importing
+	symbols from LAPACK-CFFI so that symbols that already were in
+	BLAS-CFFI are not imported
+
 	* lapack-cffi.lisp: modify to use custom cffi types as symbols not
 	keywords
 

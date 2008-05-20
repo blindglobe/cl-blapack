@@ -11,12 +11,15 @@
 (use-package :blas-cffi)
 
 (do-external-symbols (s :blas-cffi)
-  (unintern s :lapack-cffi)
   (export s))
 
-(use-package :lapack-cffi)
+;; don't use the package LAPACK-CFFI directly since some functions
+;; such as %XERBLA and %LSAME are defined in both LAPACK and BLAS and
+;; we want to use the BLAS versions.
 (do-external-symbols (s :lapack-cffi)
-  (export s))
+  (unless (find-symbol (symbol-name s) :cl-blapack)
+    (import s)
+    (export s)))
 
 ;; Right now, we only work with SBCL.  People need to add the
 ;; appropriate definitions for alternate implementations.
