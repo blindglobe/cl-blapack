@@ -1,3 +1,21 @@
+2008-05-20  Evan Monroig  <evan.monroig@gmail.com>
+
+	* lapack-cffi.lisp: modify to use custom cffi types as symbols not
+	keywords
+
+	* blas-cffi.lisp: modify to use custom cffi types as symbols not
+	keywords
+
+	* generate-blapack-interface.lisp
+	(:org.middleangle.generate-blapack-interface): use the package
+	BLAPACK-CFFI-TYPES
+	(*ctype-to-fortrantype*): update table to use symbols instead of
+	keywords for custom cffi types
+
+	* blapack-cffi-types.lisp (:org.middleangle.blapack-cffi-types):
+	replace the custom cffi types by symbols in this package and
+	export them
+
 2008-04-29  Evan Monroig  <evan.monroig@gmail.com>
 
 	* generate-blapack-interface.lisp (*outdir*): point to cl-blapack

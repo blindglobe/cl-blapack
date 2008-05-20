@@ -3,7 +3,9 @@
 
 (defpackage :org.middleangle.generate-blapack-interface
   (:nicknames :generate-blapack-interface)
-  (:use :common-lisp :foreign-numeric-vector)
+  (:use :common-lisp
+        :foreign-numeric-vector
+        :blapack-cffi-types)
   (:export :generate-blapack-files))
 
 (in-package :org.middleangle.generate-blapack-interface)
@@ -79,12 +81,12 @@
 
 (defparameter *ctype-to-fortrantype*
   '((:string :string)
-    (:int32 :fortran-int)
-    (:float :fortran-float)
-    (:double :fortran-double)
-    (:complex-float :fortran-complex-float)
-    (:complex-double :fortran-complex-double)
-    (:logical :fortran-logical)))
+    (:int32 fortran-int)
+    (:float fortran-float)
+    (:double fortran-double)
+    (:complex-float fortran-complex-float)
+    (:complex-double fortran-complex-double)
+    (:logical fortran-logical)))
 
 (defun cffi-type-to-fortran-type (cffi-type)
   (cadr (assoc cffi-type *ctype-to-fortrantype*)))
@@ -255,7 +257,8 @@ need to be customized."
     (write 
      `(defpackage ,package-name
        (:nicknames ,nickname)
-       (:use :common-lisp :cffi :foreign-numeric-vector))
+       (:use :common-lisp :cffi :foreign-numeric-vector
+             :blapack-ffi-types))
      :stream f)
     (terpri2 f)
     (write 
