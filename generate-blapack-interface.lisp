@@ -186,11 +186,30 @@ remaining lines."
                              (asdf:find-system
                               :org.middleangle.cl-blapack-gen))))))
 
+(defmacro fortran-dir-parsing (fortran-files-wildcard
+			       &optional (basedir *basedir*))
+  '(let ((files
+	  (directory
+	   (pathname 
+	    (concatenate 'string (namestring basedir)
+			 ,fortran-files-wildcard)))))
+    (mapcar (lambda (f)
+	      (multiple-value-bind (name vars ret)
+		  (parse-fortran-file f)
+		(list name vars ret)))
+     files)))
+;; above macro should simplify the following two into something like
+;; (defun parse-blas-files (&optional (basedir *basedir*))
+;;    (fortran-dir-parsing "BLAS/SRC/*.f" basedir))
+;; (defun parse-lapack-files (&optional (basedir *basedir*))
+;;    (fortran-dir-parsing "SRC/*.f" basedir))
+
 (defun parse-blas-files (&optional (basedir *basedir*))
   (let ((files
 	 (directory
 	  (pathname 
-	   (concatenate 'string (namestring basedir) "BLAS/SRC/*.f")))))
+	   (concatenate 'string
+			(namestring basedir) "BLAS/SRC/*.f")))))
     (mapcar (lambda (f)
 	      (multiple-value-bind (name vars ret)
 		  (parse-fortran-file f)
@@ -232,6 +251,8 @@ need to be customized."
   (concatenate 'string name "_"))
 
 (defun safe-string (string)
+  "Use of T as an argument is a proble -- in particular, there are
+issues with CFFI when using T as a function arg vs. the CL value."
   (if (string= string "T") "TT" string))
 
 (defun generate-cffi-interface (parsed-representation)
@@ -248,7 +269,7 @@ need to be customized."
 (defun terpri2 (str) (terpri str) (terpri str))
 
 (defun generate-bindings-file (filename package-name nickname bindings
-			       &optional(outdir *outdir*))
+			       &optional (outdir *outdir*))
   (with-open-file (f (make-pathname :name filename 
 				    :type "lisp" 
 				    :defaults outdir)
