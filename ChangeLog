@@ -1,3 +1,15 @@
+2008-06-13  Evan Monroig  <evan.monroig@gmail.com>
+
+	* org.middleangle.cl-blapack.asd (:org.middleangle.cl-blapack):
+	add the two files below
+
+	* bugfix.lisp: add bugfix for SBCL BLOCK-GENSYM bug
+
+	* features.lisp: SBCL versions 1.0.7.18 up to 1.0.17 have a bug in
+	SB-IMPL::BLOCK-GENSYM - add a feature to signal this bug
+
+	* cl-blapack.lisp (with-blapack): added CMUCL version
+
 2008-05-20  Evan Monroig  <evan.monroig@gmail.com>
 
 	* cl-blapack.lisp: slightly modified the code for importing

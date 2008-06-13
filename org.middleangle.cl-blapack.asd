@@ -6,10 +6,15 @@
 (defsystem :org.middleangle.cl-blapack
   :depends-on (:cffi :org.middleangle.foreign-numeric-vector)
   :components
-  ((:file "load-blapack-libs")
-   (:file "blapack-cffi-types")
+  ((:file "features")
+   (:file "bugfix" :depends-on ("features"))
+   (:file "load-blapack-libs" :depends-on ("bugfix"))
+   (:file "blapack-cffi-types" :depends-on ("bugfix"))
    (:file "blas-cffi" :depends-on ("load-blapack-libs"
-				   "blapack-cffi-types"))
+				   "blapack-cffi-types"
+                                   "bugfix"))
    (:file "lapack-cffi" :depends-on ("load-blapack-libs"
-				     "blapack-cffi-types"))
-   (:file "cl-blapack" :depends-on ("blas-cffi" "lapack-cffi"))))
+				     "blapack-cffi-types"
+                                     "bugfix"))
+   (:file "cl-blapack" :depends-on ("blas-cffi" "lapack-cffi"
+                                                "bugfix"))))

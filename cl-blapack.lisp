@@ -24,7 +24,7 @@
 ;; Right now, we only work with SBCL.  People need to add the
 ;; appropriate definitions for alternate implementations.
 
-#-sbcl
+#-(or sbcl cmu)
 (defmacro with-blapack (&body body)
   `(progn
     ,@body))
@@ -33,3 +33,8 @@
 (defmacro with-blapack (&body body)
   `(sb-int:with-float-traps-masked (:divide-by-zero)
     ,@body))
+
+#+cmu
+(defmacro with-blapack (&body body)
+  `(extensions:with-float-traps-masked (:divide-by-zero)
+     ,@body))
