@@ -60,3 +60,5 @@
 	    (%dgemm "N" "N" 2 2 2 1.0d0 V 2 Df 2 0.0d0 Mri 2)
 	    (%dgemm "N" "T" 2 2 2 1.0d0 Mri 2 V 2 0.0d0 Mr 2)
 	    (format t "Reconstructed M = ~A~%" Mr)))))))
+
+;; (simple-example)
