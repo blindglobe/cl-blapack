@@ -10,9 +10,11 @@
 
 (use-package :blas-cffi)
 
+;; Import/Export BLAS-CFFI symbols
 (do-external-symbols (s :blas-cffi)
   (export s))
 
+;; LAPACK-CFFI is different:
 ;; don't use the package LAPACK-CFFI directly since some functions
 ;; such as %XERBLA and %LSAME are defined in both LAPACK and BLAS and
 ;; we want to use the BLAS versions.
@@ -21,8 +23,8 @@
     (import s)
     (export s)))
 
-;; Right now, we only work with SBCL.  People need to add the
-;; appropriate definitions for alternate implementations.
+;; Right now, only works with SBCL/CMUCL.
+;; Please add appropriate definitions for alternate implementations.
 
 #-(or sbcl cmu)
 (defmacro with-blapack (&body body)

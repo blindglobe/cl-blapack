@@ -1,6 +1,9 @@
 ;; Copyright rif 2006.
 ;; Modified BSD License (see LICENSE file in this directory).
 
+;; Copyright AJ Rossini <blindglobe@gmail.com>
+;; Similar license.
+
 (defpackage :org.middleangle.generate-blapack-interface
   (:nicknames :generate-blapack-interface)
   (:use :common-lisp
@@ -203,6 +206,9 @@ remaining lines."
 ;;    (fortran-dir-parsing "BLAS/SRC/*.f" basedir))
 ;; (defun parse-lapack-files (&optional (basedir *basedir*))
 ;;    (fortran-dir-parsing "SRC/*.f" basedir))
+;;
+;; The reason is that for MATLISP, we'd like to add in other Fortran
+;; libraries if possible.
 
 (defun parse-blas-files (&optional (basedir *basedir*))
   (let ((files

@@ -1,3 +1,5 @@
+-*- mode: text -*-
+
 This is an alpha release of cl-blapack, a wrapper around the Fortran
 BLAS and LAPACK libraries for dense linear algebra.
 
@@ -9,7 +11,7 @@ reference implementation of LAPACK (available at
 www.netlib.org/LAPACK).  I include files blas-cffi.lisp and
 lapack-cffi.lisp which are the results of this parsing. If you want to
 regenerate your own, download LAPACK, load the
-org.middleangle.cl-blapack-gen system, and run 
+org.middleangle.cl-blapack-gen system, and run
 
 (generate-blapack-interface:generate-blapack-files #p"/path/to/LAPACK")
 
@@ -42,7 +44,6 @@ this as it could change in the future.
 
 This software is released under the modified-BSD license (no
 advertising clause), see LICENSE for details.
-
 
 As of 04 November 2006, this code is available at
 http://middleangle.com/rif/software/cl-blapack-alpha.tar.gz
