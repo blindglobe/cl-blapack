@@ -1,7 +1,7 @@
 ;; Copyright rif 2006.
 ;; Modified BSD License (see LICENSE file in this directory).
 
-;; Copyright AJ Rossini <blindglobe@gmail.com>
+;; minimal changes, Copyright 2008, AJ Rossini <blindglobe@gmail.com>
 ;; Similar license.
 
 (defpackage :org.middleangle.generate-blapack-interface
@@ -23,10 +23,11 @@
 (defun comment-line-p (line)
   (member (first line) (list "c" "*") :test #'string=))
 
-;; Can this be replace with (map 'string #'identity char-list)?
+
 (defun to-string (char-list)
   (map 'string #'identity char-list))
 
+;; Original def:
 ;;   (let* ((n (length char-list))
 ;; 	 (s (make-string n)))
 ;;     (dotimes (i n)
@@ -55,11 +56,10 @@
       (push (to-string (nreverse cur-token)) tokens))
     (nreverse tokens)))
 				      
+(defparameter *lines* nil
+  "This special variable holds the lines of the file currently being
+  parsed.  It's a kludge that makes life easy.")
 
-;; We use this special variable to hold the lines 
-;; of the file currently being parsed.  It's a kludge
-;; that makes life easy.
-(defparameter *lines* nil)
 (defparameter *types* '(("character") ("character*1") ("character*6")
 			("character*")
 			("integer") ("real") 
@@ -201,11 +201,17 @@ remaining lines."
 		  (parse-fortran-file f)
 		(list name vars ret)))
      files)))
-;; above macro should simplify the following two into something like
-;; (defun parse-blas-files (&optional (basedir *basedir*))
-;;    (fortran-dir-parsing "BLAS/SRC/*.f" basedir))
-;; (defun parse-lapack-files (&optional (basedir *basedir*))
-;;    (fortran-dir-parsing "SRC/*.f" basedir))
+
+;; above macro WHEN PROPERLY WRITTEN should simplify the following two
+;; functions into something like:
+;;
+;;    (defun parse-blas-files (&optional (basedir *basedir*))
+;;       (fortran-dir-parsing "BLAS/SRC/*.f" basedir))
+;;
+;; and 
+;;
+;;    (defun parse-lapack-files (&optional (basedir *basedir*))
+;;       (fortran-dir-parsing "SRC/*.f" basedir))
 ;;
 ;; The reason is that for MATLISP, we'd like to add in other Fortran
 ;; libraries if possible.
@@ -272,10 +278,15 @@ issues with CFFI when using T as a function arg vs. the CL value."
 			(lookup-type (cdr v))))
 		vars))))
 
-(defun terpri2 (str) (terpri str) (terpri str))
+(defun terpri2 (str)
+  "Square the terpri!"
+  (terpri str) (terpri str))
 
 (defun generate-bindings-file (filename package-name nickname bindings
 			       &optional (outdir *outdir*))
+  "This does the bulk of the work in getting things automagically
+done, and is used by generate-blas-bindings etc to automagically do
+the CFFI binding file."
   (with-open-file (f (make-pathname :name filename 
 				    :type "lisp" 
 				    :defaults outdir)

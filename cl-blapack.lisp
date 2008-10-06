@@ -1,14 +1,7 @@
 ;; Copyright rif 2006.
 ;; Modified BSD License (see LICENSE file in this directory).
 
-(defpackage :org.middleangle.cl-blapack
-  (:nicknames :cl-blapack)
-  (:use :common-lisp :foreign-numeric-vector)
-  (:export :with-blapack))
-
 (in-package :org.middleangle.cl-blapack)
-
-(use-package :blas-cffi)
 
 ;; Import/Export BLAS-CFFI symbols
 (do-external-symbols (s :blas-cffi)
@@ -23,9 +16,13 @@
     (import s)
     (export s)))
 
+
+;; There is one more export issue -- take a look at some of the issues
+;; with the linpack stuff in CLS. 
+
+
 ;; Right now, only works with SBCL/CMUCL.
 ;; Please add appropriate definitions for alternate implementations.
-
 #-(or sbcl cmu)
 (defmacro with-blapack (&body body)
   `(progn
