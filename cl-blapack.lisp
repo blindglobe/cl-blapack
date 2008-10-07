@@ -1,6 +1,11 @@
 ;; Copyright rif 2006.
 ;; Modified BSD License (see LICENSE file in this directory).
 
+(defpackage :org.middleangle.cl-blapack
+  (:nicknames :cl-blapack)
+  (:use :common-lisp :foreign-numeric-vector :blas-cffi)
+  (:export :with-blapack))
+
 (in-package :org.middleangle.cl-blapack)
 
 ;; Import/Export BLAS-CFFI symbols
