@@ -1,1 +1,3 @@
 *~
+*.fasl
+run-emacs.sh
