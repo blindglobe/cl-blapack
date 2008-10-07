@@ -23,16 +23,15 @@
 (defun comment-line-p (line)
   (member (first line) (list "c" "*") :test #'string=))
 
-
 (defun to-string (char-list)
+" Original def:
+   (let* ((n (length char-list))
+ 	 (s (make-string n)))
+     (dotimes (i n)
+       (setf (char s i) (elt char-list i)))
+     s))  "
   (map 'string #'identity char-list))
 
-;; Original def:
-;;   (let* ((n (length char-list))
-;; 	 (s (make-string n)))
-;;     (dotimes (i n)
-;;       (setf (char s i) (elt char-list i)))
-;;     s))
 
 (defun tokenize (line)
   "Tokenizes a line.  Removes spaces and commas."
@@ -72,11 +71,11 @@
     (("character*") :string)
     (("character*1") :string)
     (("character*6") :string)
-    (("integer") :int32)             ;; Not clear this is right on 64 bit machines?
+    (("integer") :int32)                   ; Not clear this is right on 64 bit machines?
     (("real") :float)
     (("double" "precision") :double)
-    (("complex") :complex-float)         ;; :complex-float and :complex-double
-    (("double" "complex") :complex-double) ;; are from foreign-numeric-vector
+    (("complex") :complex-float)           ; :complex-float and :complex-double
+    (("double" "complex") :complex-double) ; are from foreign-numeric-vector
     (("complex*16") :complex-double)
     (("logical") :logical)
     (("none") :void)))
@@ -189,32 +188,29 @@ remaining lines."
                              (asdf:find-system
                               :org.middleangle.cl-blapack-gen))))))
 
-(defmacro fortran-dir-parsing (fortran-files-wildcard
-			       &optional (basedir *basedir*))
-  '(let ((files
-	  (directory
-	   (pathname 
-	    (concatenate 'string (namestring basedir)
-			 ,fortran-files-wildcard)))))
-    (mapcar (lambda (f)
-	      (multiple-value-bind (name vars ret)
-		  (parse-fortran-file f)
-		(list name vars ret)))
-     files)))
+(defmacro fortran-dir-parsing-fn (fn-name fortran-files-wildcard-string)
+  `(defun ,fn-name  (&optional (basedir *basedir*))
+     (let ((files
+	    (directory
+	     (pathname 
+	      (concatenate 'string (namestring basedir)
+			   ,fortran-files-wildcard-string)))))
+       (mapcar (lambda (f)
+		 (multiple-value-bind (name vars ret)
+		     (parse-fortran-file f)
+		   (list name vars ret)))
+	       files))))
 
-;; above macro WHEN PROPERLY WRITTEN should simplify the following two
-;; functions into something like:
+;; above macro WHEN PROPERLY written (still need to verify the above)
+;; should simplify the following two functions into something like:
 ;;
-;;    (defun parse-blas-files (&optional (basedir *basedir*))
-;;       (fortran-dir-parsing "BLAS/SRC/*.f" basedir))
-;;
-;; and 
-;;
-;;    (defun parse-lapack-files (&optional (basedir *basedir*))
-;;       (fortran-dir-parsing "SRC/*.f" basedir))
-;;
-;; The reason is that for MATLISP, we'd like to add in other Fortran
-;; libraries if possible.
+;; (defvar *basedir* "testme/")
+;; (fortran-dir-parsing-fn my-parse-blas-files "BLAS/SRC/*.f") ; slime: C-c M-m
+;; (fortran-dir-parsing-fn my-parse-lapack-files "SRC/*.f")    ; slime: C-c M-m
+;; 
+;; The reason is that we'd like to add in other Fortran libraries if
+;; possible, and factor out the auto-gen bindings into a
+;; cffi-fortran-grovel package.
 
 (defun parse-blas-files (&optional (basedir *basedir*))
   (let ((files
