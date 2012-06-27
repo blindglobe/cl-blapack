@@ -32,9 +32,9 @@
 
 (eval-when (:compile-toplevel :load-toplevel)
 
-  (defparameter *gfortran-lib* "/usr/lib/libgfortran.so.3")
-  (defparameter *blas-lib* "/usr/lib/libblas.so")
-  (defparameter *lapack-lib* "/usr/lib/liblapack.so")
+  (defparameter *gfortran-lib* "libgfortran.so.3")
+  (defparameter *blas-lib* "libblas.so")
+  (defparameter *lapack-lib* "liblapack.so")
 
   (defvar *blapack-libs-loaded* nil)
 

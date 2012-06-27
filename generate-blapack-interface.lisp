@@ -71,23 +71,23 @@
     (("character*") :string)
     (("character*1") :string)
     (("character*6") :string)
-    (("integer") :int32)                   ; Not clear this is right on 64 bit machines?
-    (("real") :float)
-    (("double" "precision") :double)
-    (("complex") :complex-float)           ; :complex-float and :complex-double
-    (("double" "complex") :complex-double) ; are from foreign-numeric-vector
-    (("complex*16") :complex-double)
+    (("integer") int32)                   ; Not clear this is right on 64 bit machines?
+    (("real") float)
+    (("double" "precision") double)
+    (("complex") complex-float)           ; :complex-float and :complex-double
+    (("double" "complex") complex-double) ; are from foreign-numeric-vector
+    (("complex*16") complex-double)
     (("logical") :logical)
     (("none") :void)))
 
 
 (defparameter *ctype-to-fortrantype*
   '((:string :string)
-    (:int32 fortran-int)
-    (:float fortran-float)
-    (:double fortran-double)
-    (:complex-float fortran-complex-float)
-    (:complex-double fortran-complex-double)
+    (int32 fortran-int)
+    (float fortran-float)
+    (double fortran-double)
+    (complex-float fortran-complex-float)
+    (complex-double fortran-complex-double)
     (:logical fortran-logical)))
 
 (defun cffi-type-to-fortran-type (cffi-type)
