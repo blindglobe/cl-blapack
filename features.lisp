@@ -31,5 +31,7 @@
            (let ((v (lisp-implementation-version)))
              (and (sbcl-version-lessp version-min v)
                   (sbcl-version-lessp v version-max)))))
- (when (sbcl-version-check "1.0.7.18" "1.0.17")
-   (pushnew :sbcl-block-gensym-bug *features*)))
+ ;; (when (sbcl-version-check "1.0.7.18" "1.0.17")
+ ;;   (pushnew :sbcl-block-gensym-bug *features*))
+
+ )
