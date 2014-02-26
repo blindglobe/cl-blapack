@@ -27,20 +27,36 @@
 +      ;; (load-foreign-library *gfortran-lib*)
 
 ;;; This might not hold for your MacOSX setup, please report back!
+
+
+;;; THANKS to David Hodge, we have that included directly in the code.   Sorry that I forgot about it!! 
+
+;;; However, I (Tony Rossini) am leaving the code above for later use.
+
 |#
 
 
 (eval-when (:compile-toplevel :load-toplevel)
 
-  (defparameter *gfortran-lib* "libgfortran.so.3")
-  (defparameter *blas-lib* "libblas.so")
-  (defparameter *lapack-lib* "liblapack.so")
+
+#+darwin (progn
+	   (defparameter *gfortran-lib* nil)
+	   (defparameter *blas-lib*
+	     "/System/Library/Frameworks/Accelerate.framework/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib")
+	   (defparameter *lapack-lib*
+	     "/System/Library/Frameworks/Accelerate.framework/Frameworks/vecLib.framework/Versions/A/libLAPACK.dylib"))
+#-darwin (progn
+	   (defparameter *gfortran-lib* "libgfortran.so.3")
+	   (defparameter *blas-lib* "libblas.so")
+	   (defparameter *lapack-lib* "liblapack.so"))
+
 
   (defvar *blapack-libs-loaded* nil)
 
   (unless *blapack-libs-loaded*
     (progn
-      (load-foreign-library *gfortran-lib*)
+      (when *gfortran-lib* (load-foreign-library *gfortran-lib*))
       (load-foreign-library *blas-lib*)
       (load-foreign-library *lapack-lib*)
       (setf *blapack-libs-loaded* t))))
+
