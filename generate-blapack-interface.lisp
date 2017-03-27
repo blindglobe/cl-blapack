@@ -182,24 +182,17 @@ remaining lines."
 ;; Edit these if you want to change the input/output locations!
 (defparameter *basedir* #p"/home/rif/software/LAPACK/")
 (defparameter *outdir*
-  (make-pathname :directory
-                 (pathname-directory
-                  (truename (asdf:system-definition-pathname
-                             (asdf:find-system
-                              :org.middleangle.cl-blapack-gen))))))
+  (asdf:system-source-directory "org.middleangle.cl-blapack-gen"))
+
+(defun fortran-dir-parsing-helper (basedir wildcard)
+  (mapcar
+   (lambda (f) (multiple-value-bind (name vars ret) (parse-fortran-file f)
+                 (list name vars ret)))
+   (uiop:directory-files basedir wildcard)))
 
 (defmacro fortran-dir-parsing-fn (fn-name fortran-files-wildcard-string)
-  `(defun ,fn-name  (&optional (basedir *basedir*))
-     (let ((files
-	    (directory
-	     (pathname 
-	      (concatenate 'string (namestring basedir)
-			   ,fortran-files-wildcard-string)))))
-       (mapcar (lambda (f)
-		 (multiple-value-bind (name vars ret)
-		     (parse-fortran-file f)
-		   (list name vars ret)))
-	       files))))
+  `(defun ,fn-name (&optional (basedir *basedir*))
+     (fortran-dir-parsing-helper basedir ,fortran-files-wildcard-string)))
 
 ;; above macro WHEN PROPERLY written (still need to verify the above)
 ;; should simplify the following two functions into something like:
@@ -207,7 +200,7 @@ remaining lines."
 ;; (defvar *basedir* "testme/")
 ;; (fortran-dir-parsing-fn my-parse-blas-files "BLAS/SRC/*.f") ; slime: C-c M-m
 ;; (fortran-dir-parsing-fn my-parse-lapack-files "SRC/*.f")    ; slime: C-c M-m
-;; 
+;;
 ;; The reason is that we'd like to add in other Fortran libraries if
 ;; possible, and factor out the auto-gen bindings into a
 ;; cffi-fortran-grovel package.
